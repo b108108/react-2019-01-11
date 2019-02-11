@@ -3,6 +3,7 @@ import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import {connect} from 'react-redux';
 import {changeDateRange, resetDateRange} from '../../ac';
+import localization from '../../decorators/localization'
 
 class DateRange extends React.Component {
     static defaultProps = {
@@ -30,7 +31,7 @@ class DateRange extends React.Component {
                     {from &&
                     to && (
                         <button className="link" onClick={this.handleResetClick}>
-                            Reset
+                            {this.props.getLocalizeString('reset')}
                         </button>
                     )}
                 </p>
@@ -54,4 +55,4 @@ export default connect(
         changeDateRange,
         resetDateRange
     }
-)(DateRange)
+    )(localization(DateRange))

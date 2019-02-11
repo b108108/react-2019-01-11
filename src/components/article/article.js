@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {deleteArticle, loadArticle} from '../../ac';
 import Loader from '../common/loader';
 import {articleSelector} from '../../selectors'
+import localization from '../../decorators/localization'
 
 export const TypeArticle = PropTypes.shape({
     id: PropTypes.string,
@@ -37,7 +38,7 @@ class Article extends PureComponent {
             <div>
                 <h3>
                     {article.title}
-                    <button onClick={this.handleDelete}>Delete</button>
+                    <button onClick={this.handleDelete}>{this.props.getLocalizeString('Delete')}</button>
                 </h3>
                 <CSSTransition
                     transitionName="article"
@@ -81,4 +82,4 @@ export default connect(
         dispatchDeleteArticle: (id) => dispatch(deleteArticle(id)),
         loadArticle: (id) => dispatch(loadArticle(id))
     })
-)(Article)
+    )(localization(Article))

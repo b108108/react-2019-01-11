@@ -6,6 +6,7 @@ import {filteredArticlesSelector, loadedSelector, loadingSelector} from '../../s
 import {loadAllArticles} from '../../ac';
 import Loader from '../common/loader';
 import {NavLink} from 'react-router-dom';
+import localization from '../../decorators/localization'
 
 export const TypeArticles = PropTypes.array
 
@@ -33,7 +34,7 @@ class ArticleList extends Component{
 
         return articlesFromStore.map(article => (
             <li key={article.id} className="test--art__container">
-                <NavLink to={`/articles/${article.id}`} activeStyle={{color: 'red'}}>{article.title}</NavLink>
+                <NavLink to={`/articles/${article.id}`} activeStyle={{color: 'red'}}>{this.props.getLocalizeString(article.title)}</NavLink>
             </li>
         ))
     }
@@ -50,4 +51,4 @@ export default connect(
     {
         fetchData: loadAllArticles
     }
-)(accordion(ArticleList))
+)(localization(accordion(ArticleList)))
