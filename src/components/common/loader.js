@@ -1,9 +1,10 @@
 import React from 'react'
+import localization from '../../decorators/localization'
 
-function Loader() {
+function Loader(...rest) {
     return (
-        <h3>Loading...</h3>
+        <h3>{`${rest[0].getLocalizeString('Loading')}...`}</h3>
     )
 }
 
-export default Loader
+export default localization(Loader)

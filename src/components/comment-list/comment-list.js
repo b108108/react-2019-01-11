@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
 import Loader from '../common/loader';
 import {loadArticleComments} from '../../ac';
 import {Consumer as AuthConsumer} from '../../contexts/auth';
+import localization from '../../decorators/localization'
 
 export const TypeComments = PropTypes.arrayOf(PropTypes.string)
 
@@ -83,7 +84,7 @@ class CommentList extends Component {
                 ))}
             </ul>
         ) : (
-            <h3 className="test--comment-list__empty">No comments yet</h3>
+            <h3 className="test--comment-list__empty">{this.props.getLocalizationString('NoComments')}</h3>
         )
         return <div>
             <CommentForm articleId={articleId} />
@@ -95,4 +96,4 @@ class CommentList extends Component {
 export default connect(
     null,
     {loadArticleComments}
-)(toggleOpen(CommentList))
+)(localization(toggleOpen(CommentList)))

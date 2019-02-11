@@ -2,7 +2,7 @@
   "name": "react-2019-01-11",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:3003/",
   "dependencies": {
     "connected-react-router": "^6.2.2",
     "history": "^4.7.2",
