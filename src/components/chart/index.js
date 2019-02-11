@@ -1,1 +1,1 @@
-export {default} from './chart'
+export { default } from './counter'

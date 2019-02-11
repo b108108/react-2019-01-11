@@ -1,53 +1,57 @@
-import React, {Component} from 'react';
-import accordion from '../../decorators/accordion';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {filteredArticlesSelector, loadedSelector, loadingSelector} from '../../selectors';
-import {loadAllArticles} from '../../ac';
-import Loader from '../common/loader';
-import {NavLink} from 'react-router-dom';
+import React, {Component} from 'react'
+import Article, {TypeArticle} from '../article'
+import accordion from '../../decorators/accordion'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 
-export const TypeArticles = PropTypes.array
+export const TypeArticles = PropTypes.arrayOf(TypeArticle)
 
-class ArticleList extends Component{
-    static propTypes = {
-        articlesFromStore: TypeArticles
-    }
+class ArticleList extends Component {
+
     render() {
-        const {loading} = this.props
-        return (
-            loading ?
-                <Loader/> :
-                <ul>{this.articles}</ul>
-        );
+        return <ul>{this.articles}</ul>;
     }
 
     componentDidMount() {
-        !this.props.loaded && this.props.fetchData && this.props.fetchData()
+        this.props.fetchData && this.props.fetchData()
+    }
+
+    getArticlesStore() {
+        const {
+            articlesStore,
+            filters : {selectedArticles, startDate, endDate} 
+        } = this.props
+
+        return articlesStore.filter((article => {
+            return selectedArticles.length <= 0 || selectedArticles.indexOf(article.id) >=0 
+        })).filter((article => {
+            return !startDate || new Date(article.date) >= new Date(startDate) 
+        })).filter((article => {
+            return !endDate || new Date(article.date) <= new Date(endDate) 
+        }))
     }
 
     get articles() {
         const {
-            articlesFromStore
+            openItemId,
+            toggleOpenArticle
         } = this.props
 
-        return articlesFromStore.map(article => (
-            <li key={article.id} className="test--art__container">
-                <NavLink to={`/articles/${article.id}`} activeStyle={{color: 'red'}}>{article.title}</NavLink>
+        return this.getArticlesStore().map(article => (
+            <li key={article.id}>
+                <Article
+                    article={article}
+                    isOpen={article.id === openItemId}
+                    toggleArticle={toggleOpenArticle}
+                />
             </li>
         ))
     }
 }
 
 export default connect(
-    store => {
-        return {
-            articlesFromStore: filteredArticlesSelector(store),
-            loading: loadingSelector(store),
-            loaded: loadedSelector(store)
-        }
-    },
-    {
-        fetchData: loadAllArticles
-    }
+    (store) => ({
+        articlesStore: store.articles,
+        filters: store.filters
+    })
 )(accordion(ArticleList))

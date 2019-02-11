@@ -2,21 +2,35 @@ import React from 'react';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import {connect} from 'react-redux';
-import {changeDateRange, resetDateRange} from '../../ac';
+import {changeDateRange} from '../../ac';
 
-class DateRange extends React.Component {
+class DateRangePicker extends React.Component {
     static defaultProps = {
         numberOfMonths: 2,
     };
-    handleDayClick = (day) => {
-        const range = DateUtils.addDayToRange(day, this.props.dateRange);
-        this.props.changeDateRange(range);
+    constructor(props) {
+        super(props);
+        this.handleDayClick = this.handleDayClick.bind(this);
+        this.handleResetClick = this.handleResetClick.bind(this);
     }
-    handleResetClick = () => {
-        this.props.resetDateRange();
+    getInitialState() {
+        return {
+            from: undefined,
+            to: undefined,
+        };
+    }
+    handleDayClick(day) {
+        const range = DateUtils.addDayToRange(day, {
+            from: this.props.filters.startDate,
+            to: this.props.filters.endDate
+        });
+        this.props.dispatchDateChange(range);
+    }
+    handleResetClick() {
+        this.props.dispatchDateChange(this.getInitialState())
     }
     render() {
-        const { from, to } = this.props.dateRange;
+        const { startDate : from, endDate : to } = this.props.filters;
         const modifiers = { start: from, end: to };
         return (
             <div className="RangeExample">
@@ -47,11 +61,10 @@ class DateRange extends React.Component {
 }
 
 export default connect(
-    state => ({
-        dateRange: state.filters.dateRange
+    (store) => ({
+        filters: store.filters
     }),
-    {
-        changeDateRange,
-        resetDateRange
-    }
-)(DateRange)
+    (dispatch) => ({
+        dispatchDateChange: (dateRange) => dispatch(changeDateRange(dateRange))
+    })
+)(DateRangePicker)

@@ -1,43 +1,26 @@
-import {
-    CHANGE_SELECTION,
-    CHANGE_DATE_RANGE,
-    RESET_DATE_RANGE,
-    DELETE_ARTICLE
-} from '../constants';
+import {SELECT_ARTICLE, FILTER_BY_DATE} from '../constants';
 
-const defaultFilters = {
-    selected: [],
-    dateRange: {
-        from: null,
-        to: null
-    }
+const defaultFilters= {
+    selectedArticles: [],
+    startDate: undefined,
+    endDate: undefined    
 }
 
-export default (filtersState = defaultFilters, action) => {
+export default (state = defaultFilters, action) => {
     const {type, payload} = action
-
     switch (type) {
-        case CHANGE_SELECTION:
+        case SELECT_ARTICLE:
             return {
-                ...filtersState,
-                selected: payload.selected
+                ...state,
+                selectedArticles: payload.ids
             }
-        case DELETE_ARTICLE:
+        case FILTER_BY_DATE:
             return {
-                ...filtersState,
-                selected: filtersState.selected.filter(item => item.value !== payload.id)
-            }
-        case CHANGE_DATE_RANGE:
-            return {
-                ...filtersState,
-                dateRange: payload.dateRange
-            }
-        case RESET_DATE_RANGE:
-            return {
-                ...filtersState,
-                dateRange: defaultFilters.dateRange
+                ...state,
+                startDate: payload.dateRange.from,
+                endDate: payload.dateRange.to
             }
         default:
-            return filtersState
+            return state
     }
-}
+} 

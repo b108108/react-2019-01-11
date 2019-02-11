@@ -1,7 +1,11 @@
 import React from 'react';
-import {render, mount} from 'enzyme';
-import ArticleList from './article-list';
+import Enzyme, {render, mount} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import ArticleList from '../article-list';
 import mockedArticles from '../../fixtures';
+import config from '../config'
+
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('Article List', function () {
     it('should render', () => {
@@ -27,14 +31,14 @@ describe('Article List', function () {
             <ArticleList articles = {mockedArticles} />
         )
 
-        clickArticleButton(wrapper)
+        wrapper.find('.test--article__btn').at(0).simulate('click');
 
         expect(wrapper.find('.test--article_body').length)
             .toEqual(1)
     });
 
     it('should call fetch data on init', (done) => {
-        mount(
+        const wrapper = mount(
             <ArticleList
                 articles = {mockedArticles}
                 fetchData={() => done()}
@@ -42,29 +46,24 @@ describe('Article List', function () {
         )
     });
 
-    it('should close an article', (done) => {
-        const wrapper = mount(<ArticleList articles={mockedArticles} />)
+    it('should hide article text', (done) => {
+        const wrapper = mount(
+            <ArticleList articles={[mockedArticles[0]]}/>
+        );
 
-        expect(wrapper.find('.test--article_body').length).toEqual(0)
+         wrapper.find('.test--article__btn').at(0).simulate('click');
 
-        clickArticleButton(wrapper)
+         wrapper.find('.test--article__btn').at(0).simulate('click');
 
-        expect(wrapper.find('.test--article_body').length).toEqual(1)
+         setTimeout(() => {
+            wrapper.update();
 
-        clickArticleButton(wrapper)
+             expect(wrapper.find('.test--article_body').length)
+                .toEqual(0);
 
-        setTimeout(() => {
-            try {
-                wrapper.simulate('transitionEnd')
-                expect(wrapper.find('.test--article__body').length).toEqual(0)
-                done()
-            } catch (err) {
-                done.fail(err)
-            }
-        }, 600)
-    })
+             done();
 
-    function clickArticleButton(wrapper) {
-        wrapper.find('.test--article__btn').at(0).simulate('click')
-    }
+         }, config.TRANSITION_ENTER + config.TRANSITION_LEAVE);
+    });
+
 });

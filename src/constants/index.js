@@ -3,6 +3,10 @@ export const INCREMENT = 'INCREMENT'
 
 export const DELETE_ARTICLE = 'DELETE_ARTICLE'
 
+
+export const FILTER_BY_DATE= 'FILTER_BY_DATE'
+export const SELECT_ARTICLE= 'SELECT_ARTICLE'
+
 export const ADD_COMMENT = 'ADD_COMMENT'
 
 export const CHANGE_SELECTION = 'CHANGE_SELECTION'

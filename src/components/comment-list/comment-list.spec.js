@@ -1,31 +1,41 @@
-import React from 'react'
-import { mount } from 'enzyme'
-import CommentList from './index'
-import articles from '../../fixtures'
+import React from 'react';
+import Enzyme, {render, mount} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import CommentList from '../article-list';
+import mockedComments from '../../fixtures';
 
-describe('CommentList', () => {
-    it('should be closed by default', () => {
-        const wrapper = mount(<CommentList comments={articles[0].comments} />)
-        expect(wrapper.find('.test--comment-list__body').length).toBe(0)
-    })
+Enzyme.configure({ adapter: new Adapter() });
 
-    it('should open on click', () => {
-        const wrapper = mount(<CommentList comments={articles[0].comments} />)
-        wrapper
-            .find('.test--comment-list__btn')
-            .at(0)
-            .simulate('click')
-        expect(wrapper.find('.test--comment-list__item').length).toBe(
-            articles[0].comments.length
+describe('Comment List', function () {
+    it('should render', () => {
+        const wrapper = mount(
+            <CommentList comments = {mockedComments[0].comments}/>
         )
-    })
 
-    it('should display an empty text', () => {
-        const wrapper = mount(<CommentList />)
-        wrapper
-            .find('.test--comment-list__btn')
-            .at(0)
-            .simulate('click')
-        expect(wrapper.find('.test--comment-list__empty').length).toBe(1)
-    })
-})
+        expect(wrapper.find('.test--comment__list').length)
+            .toEqual(1);
+    });
+
+    it('should render without open comment', () => {
+        const wrapper = render(
+            <CommentList comments = {mockedComments[0].comments} />
+        )
+
+        expect(wrapper.find('.test--comment__button').length)
+            .toEqual(1);
+
+        expect(wrapper.find('.test--comment__list').length)
+            .toEqual(0);
+    });
+
+    it('should show comment text after click on button', () => {
+        const wrapper = mount(
+            <CommentList comments = {mockedComments[0].comments} isOpen />
+        )
+
+        wrapper.find('.test--comment__button').at(0).simulate('click');
+
+        expect(wrapper.find('.test--comment__list').length)
+            .toEqual(5);
+    });
+});
