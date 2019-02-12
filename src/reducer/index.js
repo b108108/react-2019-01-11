@@ -3,13 +3,12 @@ import counterReducer from './counter';
 import articlesReducer from './articles';
 import filtersReducer from './filters';
 import commentsReducer from './comments';
+import pagedCommentsReducer from './paged-comments';
 
-import { connectRouter } from 'connected-react-router'
-
-export default (history) => combineReducers({
+export default combineReducers({
     count: counterReducer,
     articles: articlesReducer,
     comments: commentsReducer,
     filters: filtersReducer,
-    router: connectRouter(history)
+    pagedComments: pagedCommentsReducer
 })

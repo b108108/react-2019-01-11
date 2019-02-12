@@ -11,8 +11,7 @@ import {
     SUCCESS,
     FAIL,
     LOAD_ARTICLE_COMMENTS,
-    LOAD_COMMENTS_FOR_PAGE,
-    COMMENTS_PER_PAGE
+    LOAD_COMMENTS_PAGE,
 } from '../constants';
 
 import {push, replace} from 'connected-react-router';
@@ -94,18 +93,10 @@ export function loadArticle(id) {
     }
 }
 
-export function checkAndLoadCommentsForPage(page) {
-    return (dispatch, getState) => {
-        const {comments: { pagination }} = getState()
-
-        if (pagination.getIn([page, 'loading']) || pagination.getIn([page, 'ids'])) {
-            return
-        }
-
-        dispatch({
-            type: LOAD_COMMENTS_FOR_PAGE,
-            payload: { page },
-            callAPI: `/api/comment?limit=${COMMENTS_PER_PAGE}&offset=${(page - 1) * COMMENTS_PER_PAGE}`
-        })
+export function loadCommentsPage(pageSize, pageNumber) {
+    return {
+        type: LOAD_COMMENTS_PAGE,
+        payload: { pageSize, pageNumber },
+        callAPI: `/api/comment?limit=${pageSize}&offset=${pageSize * pageNumber}`
     }
 }

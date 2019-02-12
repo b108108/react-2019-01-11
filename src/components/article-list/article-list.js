@@ -6,7 +6,6 @@ import {filteredArticlesSelector, loadedSelector, loadingSelector} from '../../s
 import {loadAllArticles} from '../../ac';
 import Loader from '../common/loader';
 import {NavLink} from 'react-router-dom';
-import localization from '../../decorators/localization'
 
 export const TypeArticles = PropTypes.array
 
@@ -51,4 +50,4 @@ export default connect(
     {
         fetchData: loadAllArticles
     }
-)(localization(accordion(ArticleList)))
+)(accordion(ArticleList))

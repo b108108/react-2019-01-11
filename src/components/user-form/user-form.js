@@ -5,7 +5,7 @@ class UserForm extends Component {
     render() {
         return (
             <div>
-                {this.props.getLocalizeString('userName')}:
+                "UserName:"
                 <input value={this.props.value} onChange={this.handleChange}/>
             </div>
         )
@@ -17,4 +17,4 @@ class UserForm extends Component {
     }
 }
 
-export default localization(UserForm)
+export default UserForm
