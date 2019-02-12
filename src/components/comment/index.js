@@ -1,1 +1,1 @@
-export {default} from './comment'
+export { default, TypeComment } from './comment'

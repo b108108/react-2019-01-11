@@ -35,7 +35,7 @@ export const createCommentSelector = () => createSelector(
     commentsSelector,
     idSelector,
     (comments, id) => {
-        return comments.get(id)
+        return comments[id]
     }
 )
 

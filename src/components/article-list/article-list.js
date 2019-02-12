@@ -1,53 +1,48 @@
-import React, {Component} from 'react';
-import accordion from '../../decorators/accordion';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {filteredArticlesSelector, loadedSelector, loadingSelector} from '../../selectors';
-import {loadAllArticles} from '../../ac';
-import Loader from '../common/loader';
-import {NavLink} from 'react-router-dom';
+import React, {Component} from 'react'
+import Article, {TypeArticle} from '../article'
+import accordion from '../../decorators/accordion'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import {filteredArticlesSelector} from '../../selectors';
 
-export const TypeArticles = PropTypes.array
+export const TypeArticles = PropTypes.arrayOf(TypeArticle)
 
-class ArticleList extends Component{
+class ArticleList extends Component {
     static propTypes = {
         articlesFromStore: TypeArticles
     }
+
     render() {
-        const {loading} = this.props
-        return (
-            loading ?
-                <Loader/> :
-                <ul>{this.articles}</ul>
-        );
+        return <ul>{this.articles}</ul>;
     }
 
     componentDidMount() {
-        !this.props.loaded && this.props.fetchData && this.props.fetchData()
+        this.props.fetchData && this.props.fetchData()
     }
 
     get articles() {
         const {
-            articlesFromStore
+            openItemId,
+            toggleOpenArticle,
+            articlesStore
         } = this.props
 
-        return articlesFromStore.map(article => (
+        return articlesStore.map(article => (
             <li key={article.id} className="test--art__container">
-                <NavLink to={`/articles/${article.id}`} activeStyle={{color: 'red'}}>{article.title}</NavLink>
+                <Article
+                    article={article}
+                    isOpen={article.id === openItemId}
+                    toggleArticle={toggleOpenArticle}
+                />
             </li>
         ))
     }
 }
 
 export default connect(
-    store => {
-        return {
-            articlesFromStore: filteredArticlesSelector(store),
-            loading: loadingSelector(store),
-            loaded: loadedSelector(store)
-        }
-    },
-    {
-        fetchData: loadAllArticles
-    }
+    (store) => ({
+        //articlesStore: store.articles,
+        articlesStore: filteredArticlesSelector(store),
+        filters: store.filters
+    })
 )(accordion(ArticleList))

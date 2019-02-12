@@ -1,0 +1,17 @@
+.data-enter {
+    opacity: 0.01;
+}
+
+.data-enter.data-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.data-leave {
+    opacity: 1;
+}
+
+.data-leave.data-leave-active {
+    opacity: 0.01;
+    transition: opacity 3000ms ease-in;
+}

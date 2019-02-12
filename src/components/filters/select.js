@@ -1,10 +1,19 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
+
 import {connect} from 'react-redux'
-import {changeSelection} from '../../ac';
-import {articlesSelector, filtersSelector} from '../../selectors';
+import {selectArticle, changeSelection} from '../../ac';
 
 class SelectFilter extends Component {
+    static propTypes = {
+        articles: PropTypes.array.isRequired,
+    }
+
+    // state = {
+    //     selectedOption: null
+    // }
+
     render() {
         return (
             <Select
@@ -28,10 +37,6 @@ class SelectFilter extends Component {
     }
 }
 
-// const mapDispatchToProps = {
-//     changeSelectionProp: changeSelection
-// }
-
 const mapDispatchToPropsFunc = (dispatch) => {
     return {
         changeSelectionProp: (selectedOption) => {
@@ -42,8 +47,8 @@ const mapDispatchToPropsFunc = (dispatch) => {
 
 export default connect(
     state => ({
-        articles: articlesSelector(state),
-        selectedOptions: filtersSelector(state).selected
+        articles: state.articles,
+        selectedOptions: state.filters.selected
     }),
     mapDispatchToPropsFunc
 )(SelectFilter)

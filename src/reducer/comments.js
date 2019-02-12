@@ -1,50 +1,31 @@
 import {
-    ADD_COMMENT,
-    LOAD_ARTICLE_COMMENTS,
-    LOAD_COMMENTS_FOR_PAGE,
-    START,
-    SUCCESS
+    ADD_COMMENT
 } from '../constants'
+
+import {listComments} from '../fixtures';
 import { arrToMap } from './utils'
 import {OrderedMap, Record, Map} from 'immutable'
 
-const CommentRecord = Record({
-    id: null,
-    text: null,
-    user: null
-})
+const defaultComments = listComments.reduce((acc, comment) => {
+    return {
+        ...acc,
+        [comment.id]: comment
+    }
+}, {})
 
-const ReducerRecord = Record({
-    entities: new OrderedMap({}),
-    pagination: new Map({}),
-    total: null
-})
-
-export default (state = new ReducerRecord(), action) => {
-    const { type, payload, randomId, response } = action
+export default (state = defaultComments, action) => {
+    const { type, payload } = action
 
     switch (type) {
         case ADD_COMMENT:
-            return state.setIn(
-                ['entities', randomId],
-                new CommentRecord({...payload.comment, id: randomId})
-            )
-        case LOAD_ARTICLE_COMMENTS + SUCCESS:
-            return state.mergeIn(['entities'], arrToMap(response, CommentRecord))
-
-        case LOAD_COMMENTS_FOR_PAGE + START:
-            return state.setIn(['pagination', payload.page, 'loading'], true)
-
-        case LOAD_COMMENTS_FOR_PAGE + SUCCESS:
-            return state
-                .set('total', response.total)
-                .mergeIn(['entities'], arrToMap(response.records, CommentRecord))
-                .setIn(
-                    ['pagination', payload.page, 'ids'],
-                    response.records.map((comment) => comment.id)
-                )
-                .setIn(['pagination', payload.page, 'loading'], false)
-
+            return {
+                ...comments,
+                [payload.id]: { 
+                    id: payload.id,
+                    text: payload.text,
+                    user: payload.user
+                }
+            }        
         default:
             return state
     }
