@@ -2,11 +2,11 @@ import {
     ADD_COMMENT
 } from '../constants'
 
-import {listComments} from '../fixtures';
+import {normalizedComments} from '../fixtures';
 import { arrToMap } from './utils'
 import {OrderedMap, Record, Map} from 'immutable'
 
-const defaultComments = listComments.reduce((acc, comment) => {
+const defaultComments = normalizedComments.reduce((acc, comment) => {
     return {
         ...acc,
         [comment.id]: comment

@@ -2,11 +2,10 @@ import {
     ADD_COMMENT,
     DELETE_ARTICLE,    
 } from '../constants';
-import {listArticles} from '../fixtures';
-import {arrToMap} from './utils'
-import {Record} from 'immutable';
+import {normalizedArticles} from '../fixtures';
 
-export default (articles = listArticles, action) => {
+
+export default (articles = normalizedArticles, action) => {
     const { type, payload } = action
 
     switch (type) {

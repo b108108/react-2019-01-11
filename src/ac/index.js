@@ -35,11 +35,6 @@ export const changeSelection = (selected) => ({
     payload: {selected}
 })
 
-export const changeDateRange = (dateRange) => ({
-    type: CHANGE_DATE_RANGE,
-    payload: {dateRange}
-})
-
 export const resetDateRange = () => ({
     type: RESET_DATE_RANGE
 })

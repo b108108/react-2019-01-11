@@ -40,9 +40,9 @@ class ArticleList extends Component {
 }
 
 export default connect(
-    (store) => ({
-        //articlesStore: store.articles,
-        articlesStore: filteredArticlesSelector(store),
-        filters: store.filters
-    })
+    store => {
+        return {
+            articlesStore: filteredArticlesSelector(store),
+        }        
+    }
 )(accordion(ArticleList))

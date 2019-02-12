@@ -14,8 +14,6 @@ export const TypeComments = PropTypes.arrayOf(PropTypes.string)
 class CommentList extends Component {
     static propTypes = {
         comments: TypeComments,
-
-        // from decorator
         isOpen: PropTypes.bool,
         toggleOpenItem: PropTypes.func.isRequired
     }
@@ -43,13 +41,13 @@ class CommentList extends Component {
     }
 
     getBody() {
-        const { articleId, comments, isOpen } = this.props
+        const { articleId, comments } = this.props
 
         const body = comments.length ? (
             <ul>
                 {comments.map((comment) => (
-                    <li key={comment.id} className='test--comment__list'>
-                        <Comment comment={comment} />
+                    <li key={comment} className='test--comment__list'>
+                        <Comment id={comment} />
                     </li>
                 ))}
             </ul>

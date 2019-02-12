@@ -1,8 +1,6 @@
 import {createStore, applyMiddleware, compose} from 'redux';
-import reducer from '../reducer';
 import logger from '../middleware/logger';
 import generateId from '../middleware/generate-id';
-import api from '../middleware/api';
 
 const composeEnhancers =
     typeof window === 'object' &&
@@ -13,15 +11,12 @@ const composeEnhancers =
 
 const enhancer = composeEnhancers(
     applyMiddleware(
-        routerMiddleware(history),
-        thunk,
         generateId,
-        api,
         logger
     )
 );
 
-const store = createStore(reducer(history), enhancer)
+const store = createStore(reducer, enhancer)
 
 //DEV ONLY
 window.store = store
