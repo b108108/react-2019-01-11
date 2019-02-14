@@ -21,7 +21,7 @@ const enhancer = composeEnhancers(
     )
 );
 
-const store = createStore(reducer(history), enhancer)
+const store = createStore(reducer, enhancer)
 
 //DEV ONLY
 window.store = store

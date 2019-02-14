@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import localization from '../../decorators/localization'
 
 class UserForm extends Component {
     render() {
         return (
             <div>
-                "UserName:"
+                UserName:
                 <input value={this.props.value} onChange={this.handleChange}/>
             </div>
         )

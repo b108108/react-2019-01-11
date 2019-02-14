@@ -1,1 +1,1 @@
-export { default } from '.paged-comment-list'
+export { default } from './paged-comment-list'

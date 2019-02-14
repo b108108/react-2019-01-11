@@ -30,7 +30,6 @@ class App extends Component {
                     <Route path={"/articles/new"} render={() => <h1>New article form</h1>}/>
                     <Route path={"/articles"} component={ArticlesPage}/>
                     <Route path={"/comments"} component={CommentsPage} />
-                    <Redirect from={'/'} to={'/articles'} />
                 </Switch>
             </div>
         );
